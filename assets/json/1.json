@@ -1,0 +1,12 @@
+{
+	"description": "DreamLand Purple Ghost", 
+	"external_url": "", 
+	"image": "https://gateway.lighthouse.storage/ipfs/QmZsrW2mWN9eZDx3EMZNfQ2oCgKN8tsDRiATtNAHuMVY8C", 
+	"name": "Purple Ghost",
+	"attributes": [ 
+		{
+			"trait_type": "Color",
+			"value": "Purple"
+		}
+	 ]
+  }

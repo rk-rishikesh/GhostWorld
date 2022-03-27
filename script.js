@@ -1,16 +1,119 @@
-var ethers = require("ethers");
+import Web3 from "web3";
+import { Biconomy } from "@biconomy/mexa";
+import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
+import { ADAPTER_EVENTS } from "@web3auth/base";
+import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
+import { CONNECTED_EVENT_DATA } from "@web3auth/base";
 
-const erc721Interface = new ethers.utils.Interface([
-  "function safeTransferFrom(address _from, address _to, uint256 _tokenId)",
-]);
+let biconomy;
+
+var account;
+const contractAddress = "0x8F5A5713f0F50101b57833CCAc2727AEf9cb4101";
+const abi = [{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"_tokenIds","outputs":[{"internalType":"uint256","name":"_value","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_tokenURI","type":"string"}],"name":"createNFT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getUnlockTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+
+
+// Web3Auth Integration
+
+const polygonMumbaiConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  rpcTarget: "https://rpc-mumbai.maticvigil.com",
+  blockExplorer: "https://mumbai-explorer.matic.today",
+  chainId: "0x13881",
+  displayName: "Polygon Mumbai Testnet",
+  ticker: "matic",
+  tickerName: "matic",
+};
+
+const web3auth = new Web3Auth({
+  chainConfig: polygonMumbaiConfig,
+  clientId: "BIsrnDw8kUxA_juuIONxL2am4zVAcNCVdzo-CzBYJ1qt9gevYDWYtSmZNT2d9eu0KaPZboFBZTloF_LkQSOZJsU" // get your clientId from https://developer.web3auth.io
+});
+
+
+function subscribeAuthEvents(Web3Auth) {
+Web3Auth.on(ADAPTER_EVENTS.CONNECTED, (CONNECTED_EVENT_DATA) => {
+  console.log("Yeah!, you are successfully logged in", CONNECTED_EVENT_DATA);
+});
+
+Web3Auth.on(ADAPTER_EVENTS.CONNECTING, () => {
+  console.log("connecting");
+});
+
+Web3Auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+  console.log("disconnected");
+});
+
+Web3Auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
+  console.log("some error or user have cancelled login request", error);
+});
+
+Web3Auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {
+  console.log("modal visibility", isVisible);
+});
+}
+
+const initializeModal = async () => {
+  subscribeAuthEvents(web3auth);
+  await web3auth.initModal();
+  biconomy = new Biconomy(window.web3.currentProvider, {
+    apiKey: "X0nASxmit.1294d210-d057-4fbb-979c-094caa9a5b22",
+  });
+};
+
+
+const loadBlockchainData = async () => {
+  biconomy.onEvent(biconomy.READY, async () => {
+    const provider = await web3auth.connect();
+    homeScreen.classList.remove("visible");
+    mintScreen.classList.add("visible");
+  });
+};
+
+const initBlockchain = async () => {
+  await initializeModal();
+  await loadBlockchainData();
+
+};
+
+const mintNFT = async () => {
+  const userInfo = await web3auth.getUserInfo();
+  console.log(userInfo);
+  console.log(biconomy);
+  const web3 = new Web3(biconomy);
+  console.log();
+
+  account = web3.eth.accounts.create().address;
+  const balance = await web3.eth.getBalance(account);
+  console.log(account)
+  console.log(balance)
+
+  console.log(account);
+  // const nft = new web3.eth.Contract(abi, contractAddress);
+  // nft.methods
+  //   .createNFT("https://gateway.pinata.cloud/ipfs/QmPQrHYvmhuZMXhbHSqTAJqkFQ4jxwZETAYgKmuzi9MrQK/1.json")
+  //   .send({ from: account })
+  //   .on("transactionHash", (hash) => {
+  //     console.log(hash);
+
+  //     mintScreen.classList.remove("visible");
+  //     loginScreen.classList.add("visible");
+  //   });
+  mintScreen.classList.remove("visible");
+  loginScreen.classList.add("visible");
+};
+
+
+// ***************************************************** //
 
 /* HOME SCREEN*/
 const homeScreen = document.getElementById("screen-one");
 homeScreen.classList.add("visible");
+
 const loginScreen = document.getElementById("login");
 
 const mintScreen = document.getElementById("mint");
-const mint = mintScreen.querySelector(".btn-mint");
+const mint = mintScreen.querySelector(".btn-mint_1");
 
 const login = homeScreen.querySelector(".btn-login");
 
@@ -19,28 +122,8 @@ const gameScreen = document.getElementById("screen-two");
 
 gameScreen.classList.remove("visible");
 
-var user = null;
 
-const loginUser = async () => {
-  const wallet = new sequence.Wallet("mumbai");
-  wallet.openWallet();
-  const connectDetails = await wallet.connect();
-
-  console.log("=> connected?", connectDetails.connected);
-  const walletAddress = await wallet.getAddress();
-
-  console.log(walletAddress);
-  user = walletAddress;
-  if (connectDetails.connected) {
-    homeScreen.classList.remove("visible");
-    mintScreen.classList.add("visible");
-  }
-
-  //   homeScreen.classList.remove("visible");
-  //   loginScreen.classList.add("visible");
-};
-
-login.addEventListener("click", loginUser);
+login.addEventListener("click", initBlockchain);
 
 const startGame = () => {
   loginScreen.classList.remove("visible");
@@ -49,36 +132,6 @@ const startGame = () => {
 
 start.addEventListener("click", startGame);
 
-const mintNFT = async () => {
-  const wallet = new sequence.Wallet("mumbai");
-  const connectDetails = await wallet.connect();
-
-  console.log("=> connected?", connectDetails.connected);
-  var signature;
-  
-  if (connectDetails.connected) {
-    const erc721Interface = new ethers.utils.Interface([
-      "function createNFT(string memory _tokenURI)",
-    ]);
-
-    const data = erc721Interface.encodeFunctionData("createNFT", [
-      "https://gateway.lighthouse.storage/ipfs/QmfQwoktmrWFiTaxr52visdCViQhoH8n3TL81D84kSFksc",
-    ]);
-
-    const transaction = {
-      to: "0x80a6359bA5FF1e9ec1368cBA356a676C65f46497",
-      data,
-    };
-
-    const signer = wallet.getSigner()
-    signature = await signer.sendTransaction(transaction, 80001);
-    console.log(signature)
-  }
-  if(signature){
-    mintScreen.classList.remove("visible");
-    loginScreen.classList.add("visible");
-  }
-};
 
 mint.addEventListener("click", mintNFT);
 
@@ -257,4 +310,3 @@ document
 document
   .querySelector(".dpad-down")
   .addEventListener("mouseover", (e) => handleDpadPress(directions.down));
-

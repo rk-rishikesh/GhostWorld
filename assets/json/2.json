@@ -1,0 +1,12 @@
+{
+	"description": "GhostWorld Black Ghost", 
+	"external_url": "", 
+	"image": "https://gateway.pinata.cloud/ipfs/QmTF7bgV2BkSsjADDtMzJ5dUAAEtKC5pjYdsTz2PGtDmQu/BlackSolo.png", 
+	"name": "Black Ghost",
+	"attributes": [ 
+		{
+			"trait_type": "Color",
+			"value": "Black"
+		}
+	 ]
+  }

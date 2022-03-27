@@ -1,0 +1,12 @@
+{
+	"description": "GhostWorld Chrome Ghost", 
+	"external_url": "", 
+	"image": "https://gateway.pinata.cloud/ipfs/QmTF7bgV2BkSsjADDtMzJ5dUAAEtKC5pjYdsTz2PGtDmQu/ChromeSolo.png", 
+	"name": "Chrome Ghost",
+	"attributes": [ 
+		{
+			"trait_type": "Color",
+			"value": "Chrome"
+		}
+	 ]
+  }

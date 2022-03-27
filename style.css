@@ -1,7 +1,12 @@
 :root {
    --pixel-size: 2px;
    --grid-cell: calc( var(--pixel-size) * 16);
-   --bg: #9fa7e4;
+  
+   background-position: center;
+   /* background-image: url("https://fightersgeneration.com/nx4/game/kofxi/kofxi-stage9.gif"); */
+   background-image: url("https://i.pinimg.com/originals/e8/99/f8/e899f8cc9ee082c8743abdfe7d66fa5b.gif");
+   background-size: 100%;
+   background-repeat: no-repeat;
 }
 @media( min-width: 700px ) {
    :root {
@@ -35,7 +40,7 @@ body {
    position: fixed;
    width: 100%;
    height: 100%;
-   background-image: url('https://www.bing.com/th/id/OGC.3eeb3c86e6f015687ef95f2156c816dd?pid=1.7&rurl=https%3a%2f%2f64.media.tumblr.com%2fd5cef4cd9b5112a349711291d4ed3ba4%2ftumblr_pvjfl8ItSN1vf2ld9o1_500.gifv&ehk=R9CM2bAHeGuAZuPje2Kpvou%2fm%2bKajEBFOevRVbVwUIE%3d');
+   background-image: url('https://66.media.tumblr.com/ba1e5fe0677195784bd5037de7b959cd/tumblr_p4rutuhshj1x4kppqo1_500.gif');
    background-repeat: no-repeat;
    background-position: center;
    background-size: 100%;
@@ -65,17 +70,17 @@ body {
 
 
 .frame {
-   width: calc(var(--pixel-size) * 160);
-   height: calc(var(--pixel-size) * 144);
-   outline: var(--pixel-size) solid #fff;
+   width: calc(var(--pixel-size) * 200);
+   height: calc(var(--pixel-size) * 150);
+   /* outline: var(--pixel-size) solid #fff; */
    z-index:1; 
    position:relative;
 }
 /* Game Screen */
 .modal-screen-two {
-   width: calc(var(--pixel-size) * 160);
-   height: calc(var(--pixel-size) * 144);
-   outline: var(--pixel-size) solid #fff;
+   width: calc(var(--pixel-size) * 200);
+   height: calc(var(--pixel-size) * 150);
+   /* outline: var(--pixel-size) solid #fff; */
    z-index:1; 
    position:relative;
    display: none;
@@ -88,10 +93,11 @@ body {
 
 
  .modal-screen-mint {
-   width: 60%;
-   height: 80%;
-   z-index:1; 
-   position:relative;
+   width: 100%;
+   height: 100%;
+   background-image: url('https://data.whicdn.com/images/307817007/original.gif');
+   background-position: center;
+   background-size: 100%;
    display: none;
  }
  
@@ -102,10 +108,9 @@ body {
 
  
 .camera {
-   width: calc(var(--pixel-size) * 160);
-   height: calc(var(--pixel-size) * 144);
+   width: calc(var(--pixel-size) * 200);
+   height: calc(var(--pixel-size) * 150);
    overflow: hidden;
-   background: #61ddf7;
    position:relative;
 }
 
@@ -113,7 +118,7 @@ body {
    -ms-interpolation-mode: nearest-neighbor;
        image-rendering: -moz-crisp-edges;
        image-rendering: pixelated;
-   background-image: url("https://assets.codepen.io/21542/CameraDemoMap.png");
+   background-image: url("https://i.pinimg.com/originals/05/86/d6/0586d65c4b5bd0b46458e4d2c3064733.jpg");
    background-size: 100%;
    width: calc(13 * var(--grid-cell));
    height: calc(10 * var(--grid-cell));
@@ -121,10 +126,10 @@ body {
 }
 
 .btn-start {
-   margin-left: 13.6%;
-   margin-top: 3%;
+   margin-left: 15.5%;
+   margin-top: 0%;
    width: 17rem;
-   height: 17rem;
+   height: 16.2rem;
  }
 
 .btn-login {
@@ -132,12 +137,39 @@ body {
    margin-left: 42%;
    width: 15rem;
    height: 6rem; 
+}
+
+.btn-bottom {
+   margin-left: 38%;
+   width: 25rem;
+   height: 12rem; 
 } 
 
 .btn-mint {
-   margin-top: 10%;
-   width: 45%;
-   height: 60%;
+   margin-top: 5%;
+   width: 10%;
+   height: 15%;
+} 
+
+.btn-mint_1 {
+   margin-top: 3%;
+   margin-left: 58%;
+   width: 10%;
+   height: 15%;
+} 
+
+.btn-mint_2 {
+   margin-top: 3%;
+   margin-left: 10%;
+   width: 10%;
+   height: 15%;
+} 
+
+.btn-mint_3 {
+   margin-top: 1%;
+   margin-left: 81%;
+   width: 10%;
+   height: 15%;
 } 
 
 .character {
@@ -159,7 +191,7 @@ body {
 
 .character_spritesheet {
    position: absolute;
-   background: url("https://gateway.lighthouse.storage/ipfs/QmZsrW2mWN9eZDx3EMZNfQ2oCgKN8tsDRiATtNAHuMVY8C") no-repeat no-repeat;
+   background: url(assets/3.png) no-repeat no-repeat;
    background-size: 100%;
    width: calc( var(--grid-cell)* 8 );
    height: calc( var(--grid-cell)* 8 );
@@ -286,12 +318,6 @@ body {
    width: calc(var(--pixel-size) * 75)
 }
 
-.grid-container {
-   display: grid;
-   grid-template-columns: auto auto auto;
-   background-color: #2196F3;
-   padding: 10px;
- }
 
  .grid-item {
    background-color: rgba(255, 255, 255, 0.8);
@@ -300,3 +326,11 @@ body {
    font-size: 30px;
    text-align: center;
  }
+
+
+.bat {
+   margin-top: 2%;
+   margin-left: 42%;
+   width: 18%;
+   height: 25%;
+}

@@ -7,11 +7,13 @@
     "build": "parcel build ./index.html"
   },
   "dependencies": {
-    "0xsequence": "^0.36.4",
+    "@biconomy/mexa": "^2.0.31",
+    "@web3auth/base": "^0.6.3",
+    "@web3auth/web3auth": "^0.6.3",
     "ethers": "^5.6.0",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
-    "lighthouse-web3": "^1.3.3",
-    "node-fetch": "^3.2.2"
+    "node-fetch": "^3.2.2",
+    "web3": "^1.7.1"
   }
 }

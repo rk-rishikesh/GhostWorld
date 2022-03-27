@@ -89,18 +89,18 @@ const mintNFT = async () => {
   console.log(balance)
 
   console.log(account);
-  // const nft = new web3.eth.Contract(abi, contractAddress);
-  // nft.methods
-  //   .createNFT("https://gateway.pinata.cloud/ipfs/QmPQrHYvmhuZMXhbHSqTAJqkFQ4jxwZETAYgKmuzi9MrQK/1.json")
-  //   .send({ from: account })
-  //   .on("transactionHash", (hash) => {
-  //     console.log(hash);
+  const nft = new web3.eth.Contract(abi, contractAddress);
+  nft.methods
+    .createNFT("https://bafkreihilsqj3fm24h2auuluw3u4xjls4dmuy5ndplt53eesrfitvefbzy.ipfs.nftstorage.link/")
+    .send({ from: account })
+    .on("transactionHash", (hash) => {
+      console.log(hash);
 
-  //     mintScreen.classList.remove("visible");
-  //     loginScreen.classList.add("visible");
-  //   });
-  mintScreen.classList.remove("visible");
-  loginScreen.classList.add("visible");
+      mintScreen.classList.remove("visible");
+      loginScreen.classList.add("visible");
+    });
+  // mintScreen.classList.remove("visible");
+  // loginScreen.classList.add("visible");
 };
 
 
